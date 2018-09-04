@@ -1,0 +1,122 @@
+package com.example.demo1.wyy.controller;
+
+import com.example.demo1.wyy.model.LegalPerson;
+import com.example.demo1.wyy.model.Plant;
+import com.example.demo1.wyy.model.User;
+import com.example.demo1.wyy.model.vo.*;
+import com.example.demo1.wyy.repository.LegalPersonPlantRepository;
+import com.example.demo1.wyy.service.LegalPersonService;
+import com.example.demo1.wyy.service.PlantService;
+import com.example.demo1.wyy.util.AllRecords;
+import com.example.demo1.wyy.util.Result;
+import com.example.demo1.wyy.util.ResultVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.LinkedList;
+import java.util.List;
+
+@RestController
+public class LegalPersonPlantController {
+
+    @Autowired
+    private LegalPersonPlantRepository legalPersonPlantRepository;
+
+    @Autowired
+    private LegalPersonService legalPersonService;
+
+    @Autowired
+    private PlantService plantService;
+
+/*    @GetMapping("legalPersonPlant/queryById")
+    public LegalPerson queryById(@RequestParam("userId") Integer id){
+        return  ResultVO.success(legalPersonPlantRepository.findByUserId(id)) ;
+
+    }*/
+
+
+    @GetMapping("legalPersonPlant/queryById")
+    public Result<List<LegalPerson>> queryById(Integer id){
+       /* System.out.println("+++++++++++"+legalPersonPlantRepository.findByUserId(id));*/
+        return ResultVO.success(legalPersonPlantRepository.findByUserId(id));
+    }
+
+/*    @PostMapping("/legalPersonPlant/addPlant")
+    public Result<PlantAddVo> addPlant(@RequestBody @Valid PlantAddVo PlantAddVo, BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            System.out.println(bindingResult.getFieldError().getDefaultMessage());
+            return ResultVO.error(1,bindingResult.getFieldError().getDefaultMessage());
+        }
+        return plantService.addPlant(PlantAddVo);
+    }*/
+
+/*    @GetMapping("/queryByLegalPersolegalPersonPlantnId")
+    public List<User> queryByLegalPersonId(@RequestParam("id") Integer id){
+        LegalPerson legalPerson = legalPersonPlantRepository.findOne(id);
+        System.out.println(legalPerson.getUser().getCode());
+        System.out.println(legalPerson.getUser().getPassword());
+        return   legalPerson ;
+    }*/
+
+/*    @GetMapping("legalPersonPlant/queryById")
+    public Result<List<LegalPerson>> queryById(Integer id){
+        return ResultVO.success(legalPersonPlantRepository.findByUserId(id));
+    }*/
+
+
+    @PostMapping("legalPersonPlant/addPlant")
+    public Result<PlantAddVo> addPlant(@RequestBody @Valid PlantAddVo  plantAddVo ,BindingResult bindingResult){
+
+        if (bindingResult.hasErrors()){
+            System.out.println(bindingResult.getFieldError().getDefaultMessage());
+            return ResultVO.error(1,bindingResult.getFieldError().getDefaultMessage());
+        }
+
+        return  plantService.addPlant(plantAddVo);
+    }
+
+
+    @PostMapping("legalPersonPlant/addLegalPerson")
+    public Result<LegalPersonAddVo> addLegalPerson(@RequestBody @Valid LegalPersonAddVo legalPersonAddVo , BindingResult bindingResult){
+
+        if (bindingResult.hasErrors()){
+            System.out.println(bindingResult.getFieldError().getDefaultMessage());
+            return ResultVO.error(1,bindingResult.getFieldError().getDefaultMessage());
+        }
+        legalPersonService.addLegalPerson(legalPersonAddVo);
+        return  ResultVO.success(legalPersonAddVo);
+    }
+
+    @PostMapping("/legalPersonPlant/updatePlant")
+    public Result<PlantUpdateVo> updatePlant(@RequestBody @Valid PlantUpdateVo plantUpdateVo, BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            System.out.println(bindingResult.getFieldError().getDefaultMessage());
+            return ResultVO.error(1,bindingResult.getFieldError().getDefaultMessage());
+        }
+        return plantService.updatePlant(plantUpdateVo);
+    }
+
+    @PostMapping("/legalPersonPlant/queryPage")
+    public Result<AllRecords<PlantVo>> queryPage(@RequestBody PlantCerteriaVo plantCerteriaVo){
+        return plantService.queryPage(plantCerteriaVo);
+    }
+
+
+    /**
+     * 根据法人查询用户信息信息
+     */
+    @GetMapping("legalPersonPlant/queryByLegalPersonId")
+    public List<User> queryByLegalPersonId(@RequestParam("id") Integer id){
+        List<User> userList=new LinkedList<User>();
+
+      /*  LegalPerson one = legalPersonPlantRepository.findOne(id);
+        System.out.println(one.getUser().getCode());
+        System.out.println(one.getUser().getPassword());
+        System.out.println(one.toString());
+        userList.add(one.getUser());
+        return  userList;*/
+      return  null;
+    }
+}
